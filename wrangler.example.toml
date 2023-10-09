@@ -1,0 +1,7 @@
+name = "pandabot-auth"
+compatibility_date = "2023-01-01"
+
+[vars]
+TWITCH_CLIENT_ID = ""
+TWITCH_CLIENT_SECRET = ""
+HOST = ""
