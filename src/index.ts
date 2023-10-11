@@ -59,6 +59,7 @@ app.get("/auth/twitch/callback", async (c) => {
   const clientId = c.env.TWITCH_CLIENT_ID;
   const clientSecret = c.env.TWITCH_CLIENT_SECRET;
   const code = c.req.query("code");
+  const now = new Date();
 
   if (!code) return c.newResponse(null, 400);
   const state = c.req.query("state");
@@ -96,8 +97,14 @@ app.get("/auth/twitch/callback", async (c) => {
       expires_in: number;
     };
 
+    const expiresAt = new Date(now.getTime() + data.expires_in * 1000);
+
     return c.redirect(
-      `http://localhost:${redirectPort}?access_token=${data.access_token}&refresh_token=${data.refresh_token}&expires_in=${data.expires_in}`
+      `http://localhost:${redirectPort}?access_token=${
+        data.access_token
+      }&refresh_token=${
+        data.refresh_token
+      }&expires_at=${expiresAt.toISOString()}`
     );
   } catch (error) {
     console.error("Error al obtener el token OAuth2:", error);
